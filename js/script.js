@@ -145,7 +145,7 @@ async function loadNextStage() {
         }
         
         if (reserveUrl && reserveUrl.startsWith('http')) {
-            contentHtml += `<p style="margin-top: 15px; margin-bottom: 0;"><b>ご予約：</b><a href="${reserveUrl}" target="_blank" style="color: var(--main-yellow); font-weight: 800; text-decoration: underline;">ご予約はこちらから</a></p>`;
+            contentHtml += `<p style="margin-top: 15px; margin-bottom: 0;"><b>予約：</b><a href="${reserveUrl}" target="_blank" style="color: var(--main-yellow); font-weight: 800; text-decoration: underline;">ご予約はこちらから</a></p>`;
         }
         
         if (castText || staffText) {
