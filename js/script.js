@@ -135,12 +135,17 @@ async function loadNextStage() {
         }
         
         let infoHtml = '';
-        if (date) infoHtml += `<div style="margin-bottom: 8px;"><b>日時：</b>${date}</div>`;
-        if (place) infoHtml += `<div style="margin-bottom: 8px;"><b>会場：</b>${place}</div>`;
-        if (price) infoHtml += `<div style="margin-bottom: 8px;"><b>料金：</b>${price}</div>`;
+        if (date) infoHtml += `<div style="display: flex; margin-bottom: 8px;"><b style="width: 60px;">日時</b><span style="margin-right: 10px;">：</span><span>${date}</span></div>`;
+        if (place) infoHtml += `<div style="display: flex; margin-bottom: 8px;"><b style="width: 60px;">会場</b><span style="margin-right: 10px;">：</span><span>${place}</span></div>`;
+        if (price) infoHtml += `<div style="display: flex; margin-bottom: 8px;"><b style="width: 60px;">料金</b><span style="margin-right: 10px;">：</span><span>${price}</span></div>`;
         
         if (reserveUrl && reserveUrl.startsWith('http')) {
-            infoHtml += `<div style="margin-bottom: 8px;"><b>予約：</b><a href="${reserveUrl}" target="_blank" style="color: var(--main-yellow); font-weight: 800; text-decoration: underline;">こちらから</a></div>`;
+            infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: center; margin-top: 15px;">
+                <b style="width: 60px;">予約</b><span style="margin-right: 10px;">：</span>
+                <a href="${reserveUrl}" target="_blank" style="display: inline-block; padding: 6px 24px; background-color: var(--main-yellow); color: white; font-weight: 800; border-radius: 4px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.2s;">
+                    こちらから
+                </a>
+            </div>`;
         }
         
         let contentHtml = '';
@@ -148,22 +153,47 @@ async function loadNextStage() {
             contentHtml += `<div style="font-size: 1.05rem; line-height: 1.6;">${infoHtml}</div>`;
         }
         
+        const parseTextToGrid = (text) => {
+            if (!text) return '';
+            const lines = text.split('\n');
+            let html = '<div style="display: grid; grid-template-columns: auto 1fr; gap: 4px 15px;">';
+            lines.forEach(line => {
+                if (!line.trim()) return;
+                const parts = line.split(/[：:]/);
+                if (parts.length >= 2) {
+                    const role = parts.shift().trim();
+                    const name = parts.join(':').trim();
+                    html += `<div style="text-align: justify; text-align-last: justify; color: #555;">${role}</div><div>${name}</div>`;
+                } else {
+                    html += `<div style="grid-column: 1 / -1;">${line}</div>`;
+                }
+            });
+            html += '</div>';
+            return html;
+        };
+
         if (castText || staffText) {
             if (infoHtml) {
-                contentHtml += `<hr style="border: 0; border-top: 1px solid #ddd; margin: 25px 0;">`;
+                contentHtml += `<hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">`;
             }
             if (castText) {
-                contentHtml += `<div style="margin-bottom: 25px; line-height: 1.7;"><b style="font-size: 1.1rem; color: var(--main-blue); display: block; margin-bottom: 8px;">役者</b><div style="white-space: pre-wrap; padding-left: 2px;">${castText}</div></div>`;
+                contentHtml += `<div style="margin-bottom: 30px; line-height: 1.7;">
+                    <b style="font-size: 1.2rem; color: var(--main-blue); display: block; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px;">役者</b>
+                    ${parseTextToGrid(castText)}
+                </div>`;
             }
             if (staffText) {
-                contentHtml += `<div style="margin-bottom: 0; line-height: 1.7;"><b style="font-size: 1.1rem; color: var(--main-blue); display: block; margin-bottom: 8px;">スタッフ</b><div style="white-space: pre-wrap; padding-left: 2px;">${staffText}</div></div>`;
+                contentHtml += `<div style="margin-bottom: 0; line-height: 1.7;">
+                    <b style="font-size: 1.2rem; color: var(--main-blue); display: block; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px;">スタッフ</b>
+                    ${parseTextToGrid(staffText)}
+                </div>`;
             }
         }
         
         if (titleText || imgHtml || contentHtml) {
             container.innerHTML = `
-                <h2 style="color:var(--hero-blue); font-size: 1.8rem; line-height: 1.4; margin-bottom: 5px;">${groupName}${titleText ? `<br class="sp-only">${titleText}` : ''}</h2>
-                <div style="background:#f9f9f9; padding:35px 30px; border-radius:10px; margin-top:20px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <h2 style="color:var(--hero-blue); font-size: 1.8rem; line-height: 1.4; margin-bottom: 5px; text-align: center;">${groupName}${titleText ? `<br class="sp-only">${titleText}` : ''}</h2>
+                <div style="background:#ffffff; padding:40px; border-radius:12px; margin-top:30px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 800px; margin-left: auto; margin-right: auto;">
                     ${imgHtml}
                     ${contentHtml}
                 </div>`;
