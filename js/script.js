@@ -128,42 +128,42 @@ async function loadNextStage() {
         let imgHtml = '';
         if (img1 || img2) {
             imgHtml = `
-            <div class="stage-image-container">
+            <div class="stage-image-container" style="margin-bottom: 25px;">
                 ${img1 ? `<img src="${img1}" onclick="openModal(this.src)">` : ''}
                 ${img2 ? `<img src="${img2}" onclick="openModal(this.src)">` : ''}
             </div>`;
         }
         
         let infoHtml = '';
-        if (date) infoHtml += `<b>日時：</b>${date}\n`;
-        if (place) infoHtml += `<b>会場：</b>${place}\n`;
-        if (price) infoHtml += `<b>料金：</b>${price}\n`;
+        if (date) infoHtml += `<div style="margin-bottom: 8px;"><b>日時：</b>${date}</div>`;
+        if (place) infoHtml += `<div style="margin-bottom: 8px;"><b>会場：</b>${place}</div>`;
+        if (price) infoHtml += `<div style="margin-bottom: 8px;"><b>料金：</b>${price}</div>`;
+        
+        if (reserveUrl && reserveUrl.startsWith('http')) {
+            infoHtml += `<div style="margin-bottom: 8px;"><b>予約：</b><a href="${reserveUrl}" target="_blank" style="color: var(--main-yellow); font-weight: 800; text-decoration: underline;">こちらから</a></div>`;
+        }
         
         let contentHtml = '';
         if (infoHtml) {
-            contentHtml += `<p style="white-space:pre-wrap; margin-bottom: 0;">${infoHtml.trim()}</p>`;
-        }
-        
-        if (reserveUrl && reserveUrl.startsWith('http')) {
-            contentHtml += `<p style="margin-top: 15px; margin-bottom: 0;"><b>予約：</b><a href="${reserveUrl}" target="_blank" style="color: var(--main-yellow); font-weight: 800; text-decoration: underline;">ご予約はこちらから</a></p>`;
+            contentHtml += `<div style="font-size: 1.05rem; line-height: 1.6;">${infoHtml}</div>`;
         }
         
         if (castText || staffText) {
-            if (infoHtml || reserveUrl) {
-                contentHtml += `<hr style="border:0; border-top:1px solid #ddd; margin:20px 0;">`;
+            if (infoHtml) {
+                contentHtml += `<hr style="border: 0; border-top: 1px solid #ddd; margin: 25px 0;">`;
             }
             if (castText) {
-                contentHtml += `<p style="white-space:pre-wrap; margin-bottom: 20px;"><b>役者：</b>\n${castText}</p>`;
+                contentHtml += `<div style="margin-bottom: 25px; line-height: 1.7;"><b style="font-size: 1.1rem; color: var(--main-blue); display: block; margin-bottom: 8px;">役者</b><div style="white-space: pre-wrap; padding-left: 2px;">${castText}</div></div>`;
             }
             if (staffText) {
-                contentHtml += `<p style="white-space:pre-wrap; margin-bottom: 0;"><b>スタッフ：</b>\n${staffText}</p>`;
+                contentHtml += `<div style="margin-bottom: 0; line-height: 1.7;"><b style="font-size: 1.1rem; color: var(--main-blue); display: block; margin-bottom: 8px;">スタッフ</b><div style="white-space: pre-wrap; padding-left: 2px;">${staffText}</div></div>`;
             }
         }
         
         if (titleText || imgHtml || contentHtml) {
             container.innerHTML = `
-                <h2 style="color:var(--hero-blue)">${groupName}${titleText ? `<br class="sp-only">${titleText}` : ''}</h2>
-                <div style="background:#f9f9f9; padding:30px; border-radius:10px; margin-top:20px;">
+                <h2 style="color:var(--hero-blue); font-size: 1.8rem; line-height: 1.4; margin-bottom: 5px;">${groupName}${titleText ? `<br class="sp-only">${titleText}` : ''}</h2>
+                <div style="background:#f9f9f9; padding:35px 30px; border-radius:10px; margin-top:20px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
                     ${imgHtml}
                     ${contentHtml}
                 </div>`;
