@@ -118,7 +118,6 @@ async function loadNextStage() {
         const date = cols[3]?.trim() || '';
         const place = cols[4]?.trim() || '';
         
-        // F列に脚本が挿入されたため、以降のインデックスを1つずつ後ろへシフト
         const scriptText = cols[5]?.trim() || '';
         const img1 = formatImg(cols[6]);
         const img2 = formatImg(cols[7]);
@@ -160,14 +159,14 @@ async function loadNextStage() {
         const parseTextToGrid = (text) => {
             if (!text) return '';
             const lines = text.split(/(?:<br\s*\/?>|[\r\n])+/i);
-            let html = '<div style="display: grid; grid-template-columns: max-content 1fr; gap: 6px 20px; align-items: baseline;">';
+            let html = '<div style="display: grid; grid-template-columns: max-content max-content 1fr; gap: 6px 8px; align-items: baseline;">';
             lines.forEach(line => {
                 if (!line.trim()) return;
                 const parts = line.split(/[：:]/);
                 if (parts.length >= 2) {
                     const role = parts.shift().trim();
                     const name = parts.join('：').trim();
-                    html += `<div style="color: #555; font-weight: 600;">${role}</div><div style="line-height: 1.6;">${name}</div>`;
+                    html += `<div style="color: #555; font-weight: 600; text-align-last: justify;">${role}</div><div style="color: #555;">：</div><div style="line-height: 1.6;">${name}</div>`;
                 } else {
                     html += `<div style="grid-column: 1 / -1; line-height: 1.6;">${line}</div>`;
                 }
