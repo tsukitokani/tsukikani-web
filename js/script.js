@@ -117,8 +117,9 @@ async function loadNextStage() {
         
         const date = cols[3]?.trim() || '';
         const place = cols[4]?.trim() || '';
-        const castStaff = cols[9]?.trim() || ''; // ズレを修正して正しい列から取得
-        const price = cols[11]?.trim() || '';   // ズレを修正して正しい列から取得
+        const castText = cols[8]?.trim() || '';
+        const staffText = cols[9]?.trim() || '';
+        const price = cols[11]?.trim() || '';
         
         const img1 = formatImg(cols[5]);
         const img2 = formatImg(cols[6]);
@@ -141,11 +142,18 @@ async function loadNextStage() {
         if (infoHtml) {
             contentHtml += `<p style="white-space:pre-wrap;">${infoHtml.trim()}</p>`;
         }
-        if (castStaff) {
+        
+        // キャストとスタッフを分けて個別に追加する処理
+        if (castText || staffText) {
             if (infoHtml) {
                 contentHtml += `<hr style="border:0; border-top:1px solid #ddd; margin:20px 0;">`;
             }
-            contentHtml += `<p style="white-space:pre-wrap;"><b>キャスト / スタッフ：</b>\n${castStaff}</p>`;
+            if (castText) {
+                contentHtml += `<p style="white-space:pre-wrap; margin-bottom: 20px;"><b>キャスト：</b>\n${castText}</p>`;
+            }
+            if (staffText) {
+                contentHtml += `<p style="white-space:pre-wrap; margin-bottom: 0;"><b>スタッフ：</b>\n${staffText}</p>`;
+            }
         }
         
         if (titleText || imgHtml || contentHtml) {
@@ -190,7 +198,7 @@ async function loadPastStages() {
 async function loadMembers() {
     const container = document.getElementById('js-member-accordion');
     if (!container) return;
-    const res = await fetch(`${BASE_URL}gid=900532729&single=true&output=tsv&t=${new Date().getTime()}`);
+    const res = await fetch(`${BASE_URL(900532729)}&single=true&output=tsv&t=${new Date().getTime()}`);
     const text = await res.text();
     const rows = text.split('\n').slice(1);
     const groups = {};
