@@ -117,10 +117,10 @@ async function loadNextStage() {
         
         const date = cols[3]?.trim() || '';
         const place = cols[4]?.trim() || '';
-        const castText = cols[8]?.trim() || '';
-        const staffText = cols[9]?.trim() || '';
-        const price = cols[11]?.trim() || '';
-        const reserveUrl = cols[12]?.trim() || '';
+        const reserveUrl = cols[7]?.trim() || ''; // H列(7)
+        const castText = cols[8]?.trim() || '';   // I列(8)
+        const staffText = cols[9]?.trim() || '';  // J列(9)
+        const price = cols[10]?.trim() || '';     // K列(10)
         
         const img1 = formatImg(cols[5]);
         const img2 = formatImg(cols[6]);
