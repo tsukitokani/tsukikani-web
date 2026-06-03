@@ -117,10 +117,10 @@ async function loadNextStage() {
         
         const date = cols[3]?.trim() || '';
         const place = cols[4]?.trim() || '';
-        const reserveUrl = cols[7]?.trim() || ''; // H列(7)
-        const castText = cols[8]?.trim() || '';   // I列(8)
-        const staffText = cols[9]?.trim() || '';  // J列(9)
-        const price = cols[10]?.trim() || '';     // K列(10)
+        const reserveUrl = cols[7]?.trim() || '';
+        const castText = cols[8]?.trim() || '';
+        const staffText = cols[9]?.trim() || '';
+        const price = cols[10]?.trim() || '';
         
         const img1 = formatImg(cols[5]);
         const img2 = formatImg(cols[6]);
@@ -145,7 +145,7 @@ async function loadNextStage() {
         }
         
         if (reserveUrl && reserveUrl.startsWith('http')) {
-            contentHtml += `<p style="margin-top: 15px; margin-bottom: 0;"><b>ご予約：</b><a href="${reserveUrl}" target="_blank" style="color: var(--main-yellow); font-weight: 800; text-decoration: underline;">こちらのフォームよりご予約ください</a></p>`;
+            contentHtml += `<p style="margin-top: 15px; margin-bottom: 0;"><b>ご予約：</b><a href="${reserveUrl}" target="_blank" style="color: var(--main-yellow); font-weight: 800; text-decoration: underline;">ご予約はこちらから</a></p>`;
         }
         
         if (castText || staffText) {
