@@ -117,8 +117,8 @@ async function loadNextStage() {
         
         const date = cols[3]?.trim() || '';
         const place = cols[4]?.trim() || '';
-        const castStaff = cols[8]?.trim() || '';
-        const price = cols[10]?.trim() || '';
+        const castStaff = cols[9]?.trim() || ''; // ズレを修正して正しい列から取得
+        const price = cols[11]?.trim() || '';   // ズレを修正して正しい列から取得
         
         const img1 = formatImg(cols[5]);
         const img2 = formatImg(cols[6]);
@@ -139,13 +139,13 @@ async function loadNextStage() {
         
         let contentHtml = '';
         if (infoHtml) {
-            contentHtml += `<p style="white-space:pre-wrap; margin-top:15px; margin-bottom:0;">${infoHtml.trim()}</p>`;
+            contentHtml += `<p style="white-space:pre-wrap;">${infoHtml.trim()}</p>`;
         }
         if (castStaff) {
             if (infoHtml) {
                 contentHtml += `<hr style="border:0; border-top:1px solid #ddd; margin:20px 0;">`;
             }
-            contentHtml += `<p style="white-space:pre-wrap; margin-bottom:0;"><b>キャスト / スタッフ：</b>\n${castStaff}</p>`;
+            contentHtml += `<p style="white-space:pre-wrap;"><b>キャスト / スタッフ：</b>\n${castStaff}</p>`;
         }
         
         if (titleText || imgHtml || contentHtml) {
