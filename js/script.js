@@ -117,13 +117,15 @@ async function loadNextStage() {
         
         const date = cols[3]?.trim() || '';
         const place = cols[4]?.trim() || '';
-        const reserveUrl = cols[7]?.trim() || '';
-        const castText = cols[8]?.trim() || '';
-        const staffText = cols[9]?.trim() || '';
-        const price = cols[10]?.trim() || '';
         
-        const img1 = formatImg(cols[5]);
-        const img2 = formatImg(cols[6]);
+        // F列に脚本が挿入されたため、以降のインデックスを1つずつ後ろへシフト
+        const scriptText = cols[5]?.trim() || '';
+        const img1 = formatImg(cols[6]);
+        const img2 = formatImg(cols[7]);
+        const reserveUrl = cols[8]?.trim() || '';
+        const castText = cols[9]?.trim() || '';
+        const staffText = cols[10]?.trim() || '';
+        const price = cols[11]?.trim() || '';
         
         let imgHtml = '';
         if (img1 || img2) {
@@ -135,6 +137,7 @@ async function loadNextStage() {
         }
         
         let infoHtml = '';
+        if (scriptText) infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="width: 3em; text-align-last: justify; color: #555; font-weight: bold; flex-shrink: 0;">脚本</div><div style="margin: 0 8px; color: #555;">：</div><div>${scriptText}</div></div>`;
         if (date) infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="width: 3em; text-align-last: justify; color: #555; font-weight: bold; flex-shrink: 0;">日時</div><div style="margin: 0 8px; color: #555;">：</div><div>${date}</div></div>`;
         if (place) infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="width: 3em; text-align-last: justify; color: #555; font-weight: bold; flex-shrink: 0;">会場</div><div style="margin: 0 8px; color: #555;">：</div><div>${place}</div></div>`;
         if (price) infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="width: 3em; text-align-last: justify; color: #555; font-weight: bold; flex-shrink: 0;">料金</div><div style="margin: 0 8px; color: #555;">：</div><div>${price}</div></div>`;
