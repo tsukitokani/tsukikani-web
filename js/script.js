@@ -135,14 +135,15 @@ async function loadNextStage() {
         }
         
         let infoHtml = '';
-        if (date) infoHtml += `<div style="display: flex; margin-bottom: 8px;"><b style="width: 60px;">日時</b><span style="margin-right: 10px;">：</span><span>${date}</span></div>`;
-        if (place) infoHtml += `<div style="display: flex; margin-bottom: 8px;"><b style="width: 60px;">会場</b><span style="margin-right: 10px;">：</span><span>${place}</span></div>`;
-        if (price) infoHtml += `<div style="display: flex; margin-bottom: 8px;"><b style="width: 60px;">料金</b><span style="margin-right: 10px;">：</span><span>${price}</span></div>`;
+        if (date) infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="width: 3em; text-align-last: justify; color: #555; font-weight: bold; flex-shrink: 0;">日時</div><div style="margin: 0 8px; color: #555;">：</div><div>${date}</div></div>`;
+        if (place) infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="width: 3em; text-align-last: justify; color: #555; font-weight: bold; flex-shrink: 0;">会場</div><div style="margin: 0 8px; color: #555;">：</div><div>${place}</div></div>`;
+        if (price) infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="width: 3em; text-align-last: justify; color: #555; font-weight: bold; flex-shrink: 0;">料金</div><div style="margin: 0 8px; color: #555;">：</div><div>${price}</div></div>`;
         
         if (reserveUrl && reserveUrl.startsWith('http')) {
-            infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: center; margin-top: 15px;">
-                <b style="width: 60px;">予約</b><span style="margin-right: 10px;">：</span>
-                <a href="${reserveUrl}" target="_blank" style="display: inline-block; padding: 6px 24px; background-color: var(--main-yellow); color: white; font-weight: 800; border-radius: 4px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.2s;">
+            infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: center; margin-top: 20px;">
+                <div style="width: 3em; text-align-last: justify; color: #555; font-weight: bold; flex-shrink: 0;">予約</div>
+                <div style="margin: 0 8px; color: #555;">：</div>
+                <a href="${reserveUrl}" target="_blank" style="display: inline-block; padding: 8px 24px; background-color: var(--main-yellow); color: white; font-weight: 800; border-radius: 30px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: 0.2s;">
                     こちらから
                 </a>
             </div>`;
@@ -155,17 +156,17 @@ async function loadNextStage() {
         
         const parseTextToGrid = (text) => {
             if (!text) return '';
-            const lines = text.split('\n');
-            let html = '<div style="display: grid; grid-template-columns: auto 1fr; gap: 4px 15px;">';
+            const lines = text.split(/(?:<br\s*\/?>|[\r\n])+/i);
+            let html = '<div style="display: grid; grid-template-columns: max-content 1fr; gap: 6px 20px; align-items: baseline;">';
             lines.forEach(line => {
                 if (!line.trim()) return;
                 const parts = line.split(/[：:]/);
                 if (parts.length >= 2) {
                     const role = parts.shift().trim();
-                    const name = parts.join(':').trim();
-                    html += `<div style="text-align: justify; text-align-last: justify; color: #555;">${role}</div><div>${name}</div>`;
+                    const name = parts.join('：').trim();
+                    html += `<div style="color: #555; font-weight: 600;">${role}</div><div style="line-height: 1.6;">${name}</div>`;
                 } else {
-                    html += `<div style="grid-column: 1 / -1;">${line}</div>`;
+                    html += `<div style="grid-column: 1 / -1; line-height: 1.6;">${line}</div>`;
                 }
             });
             html += '</div>';
