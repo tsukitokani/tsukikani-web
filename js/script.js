@@ -120,6 +120,7 @@ async function loadNextStage() {
         const castText = cols[8]?.trim() || '';
         const staffText = cols[9]?.trim() || '';
         const price = cols[11]?.trim() || '';
+        const reserveUrl = cols[12]?.trim() || '';
         
         const img1 = formatImg(cols[5]);
         const img2 = formatImg(cols[6]);
@@ -140,16 +141,19 @@ async function loadNextStage() {
         
         let contentHtml = '';
         if (infoHtml) {
-            contentHtml += `<p style="white-space:pre-wrap;">${infoHtml.trim()}</p>`;
+            contentHtml += `<p style="white-space:pre-wrap; margin-bottom: 0;">${infoHtml.trim()}</p>`;
         }
         
-        // キャストとスタッフを分けて個別に追加する処理
+        if (reserveUrl && reserveUrl.startsWith('http')) {
+            contentHtml += `<p style="margin-top: 15px; margin-bottom: 0;"><b>ご予約：</b><a href="${reserveUrl}" target="_blank" style="color: var(--main-yellow); font-weight: 800; text-decoration: underline;">こちらのフォームよりご予約ください</a></p>`;
+        }
+        
         if (castText || staffText) {
-            if (infoHtml) {
+            if (infoHtml || reserveUrl) {
                 contentHtml += `<hr style="border:0; border-top:1px solid #ddd; margin:20px 0;">`;
             }
             if (castText) {
-                contentHtml += `<p style="white-space:pre-wrap; margin-bottom: 20px;"><b>キャスト：</b>\n${castText}</p>`;
+                contentHtml += `<p style="white-space:pre-wrap; margin-bottom: 20px;"><b>役者：</b>\n${castText}</p>`;
             }
             if (staffText) {
                 contentHtml += `<p style="white-space:pre-wrap; margin-bottom: 0;"><b>スタッフ：</b>\n${staffText}</p>`;
@@ -198,7 +202,7 @@ async function loadPastStages() {
 async function loadMembers() {
     const container = document.getElementById('js-member-accordion');
     if (!container) return;
-    const res = await fetch(`${BASE_URL(900532729)}&single=true&output=tsv&t=${new Date().getTime()}`);
+    const res = await fetch(`${BASE_URL}gid=900532729&single=true&output=tsv&t=${new Date().getTime()}`);
     const text = await res.text();
     const rows = text.split('\n').slice(1);
     const groups = {};
