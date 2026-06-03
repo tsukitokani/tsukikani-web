@@ -126,6 +126,8 @@ async function loadNextStage() {
         const staffText = cols[10]?.trim() || '';
         const price = cols[11]?.trim() || '';
         
+        const scheduleText = cols[12]?.trim() || ''; 
+        
         let imgHtml = '';
         if (img1 || img2) {
             imgHtml = `
@@ -138,6 +140,12 @@ async function loadNextStage() {
         let infoHtml = '';
         if (scriptText) infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="color: #555; font-weight: bold; flex-shrink: 0; width: 3em;">脚本</div><div style="color: #555;">：</div><div style="margin-left: 8px;">${scriptText}</div></div>`;
         if (date) infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="color: #555; font-weight: bold; flex-shrink: 0; width: 3em;">日時</div><div style="color: #555;">：</div><div style="margin-left: 8px;">${date}</div></div>`;
+        
+        if (scheduleText) {
+            const formattedSchedule = scheduleText.replace(/(?:<br\s*\/?>|[\r\n]+)/gi, '<br>');
+            infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="color: #555; font-weight: bold; flex-shrink: 0; width: 4.5em;">ｽｹｼﾞｭｰﾙ</div><div style="color: #555;">：</div><div style="margin-left: 8px;">${formattedSchedule}</div></div>`;
+        }
+
         if (place) infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="color: #555; font-weight: bold; flex-shrink: 0; width: 3em;">会場</div><div style="color: #555;">：</div><div style="margin-left: 8px;">${place}</div></div>`;
         if (price) infoHtml += `<div style="display: flex; margin-bottom: 8px; align-items: baseline;"><div style="color: #555; font-weight: bold; flex-shrink: 0; width: 3em;">料金</div><div style="color: #555;">：</div><div style="margin-left: 8px;">${price}</div></div>`;
         
